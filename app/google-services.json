@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "36987035264",
+    "project_id": "ayano-app-225c2",
+    "storage_bucket": "ayano-app-225c2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36987035264:android:c252dfce504d83abf5d065",
+        "android_client_info": {
+          "package_name": "com.aistudio.ayano.testpass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0iywVydOCYoUfzzFMRNz5mKWqeuevAlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
