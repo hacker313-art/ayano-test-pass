@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Master Admin Check: Only UID BO98jRolQ0eueqnwZJ2D8PxSiae2 has full admin privileges
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "BO98jRolQ0eueqnwZJ2D8PxSiae2";
+    }
+
+    // Authenticated user check
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // User Profiles:
+    // Each student can read/write their own profile; Master Admin can read/manage all profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create, update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Tests Collection:
+    // Students can only read tests.
+    // ONLY Master Admin (UID BO98jRolQ0eueqnwZJ2D8PxSiae2) can create, update, or delete tests.
+    match /tests/{testId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isAdmin();
+
+      // Questions Subcollection:
+      // Students can only read questions.
+      // ONLY Master Admin can add, edit, or delete questions.
+      match /questions/{questionId} {
+        allow read: if isAuthenticated();
+        allow create, update, delete: if isAdmin();
+      }
+    }
+
+    // Exam Attempts Collection:
+    // Students can submit their own attempt and read their own attempt.
+    // Master Admin can read and analyze all student attempts.
+    match /attempts/{attemptId} {
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // Real-time Leaderboard:
+    // All authenticated users can view the ranking leaderboard.
+    // Students can write their own score; Master Admin can manage.
+    match /leaderboard/{testId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+
+      match /entries/{userId} {
+        allow read: if isAuthenticated();
+        allow create, update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+        allow delete: if isAdmin();
+      }
+    }
+  }
+}

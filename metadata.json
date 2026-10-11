@@ -1,0 +1,8 @@
+{
+  "name": "AYANO TEST PASS",
+  "description": "NEET CBT (Computer Based Test) exam simulation app with real-time test player, question palette, dark theme, instant results, and PDF parsing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
